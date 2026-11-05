@@ -1,0 +1,71 @@
+{
+  "baseCommit": "12c48336dd37a18c70f3e8ccec0807ada452407d",
+  "files": [
+    {
+      "path": "gateway/src/components/DataTable.tsx",
+      "overlay": "src/components/DataTable.tsx",
+      "before": "4da8b0738c8bc192f1fcce738a2ed58ffb3945d761e252c96b0b1e4d6b55903a",
+      "after": "18df521f3aa23be3bd6c3455691f4f6bc77211175c618715d07625ea3d9d27ab"
+    },
+    {
+      "path": "gateway/src/components/GraphControls.tsx",
+      "overlay": "src/components/GraphControls.tsx",
+      "before": null,
+      "after": "e13c5bcae6d646497daa0a67f533d8e3fb9fb07e48ec5dea6b19655482d34bec"
+    },
+    {
+      "path": "gateway/src/components/GraphControls.test.tsx",
+      "overlay": "src/components/GraphControls.test.tsx",
+      "before": null,
+      "after": "f7f4a81051455da6bcc48acff8bbabb64ea00053a97d47704bd33fdc646cab84"
+    },
+    {
+      "path": "gateway/src/layout/PageShell.tsx",
+      "overlay": "src/layout/PageShell.tsx",
+      "before": "5b81dbb9888f3a8e5d33d9299b17a1350a8012b3953243c6f51991d0685e50b5",
+      "after": "7a6540b763715aa0080770c6b573546ed88550aeb665d8d21b469a97416d6186"
+    },
+    {
+      "path": "gateway/src/layout/NavRail.tsx",
+      "overlay": "src/layout/NavRail.tsx",
+      "before": "7d536380bf35fad0d32ecd98ee9d5816b86c72d67623bf389393042122e41c9a",
+      "after": "65bb0dabe0b09de02228c4653fa89d4c8f4b9161051dd959e446391a6b92abc9"
+    },
+    {
+      "path": "gateway/src/layout/TopBar.tsx",
+      "overlay": "src/layout/TopBar.tsx",
+      "before": "7873313527d166215f1a2734a8f10b1c29366233298d95d227c99b8199e07b29",
+      "after": "ec95cedb78553682783d8a0d18a07860c8fbd2596b4925f8f9a980f2fcc47956"
+    },
+    {
+      "path": "gateway/src/theme/global-style.ts",
+      "overlay": "src/theme/global-style.ts",
+      "before": "4ae65f8c197105ed93824b01768287c08d8347e53bdeff1dc6cc60c8f68847d0",
+      "after": "df082c02b52abe43be6497b05f0c4f2ae5e060bde643adf7235a596ff15c5488"
+    },
+    {
+      "path": "gateway/src/pages/ecosystem/EcosystemGraphPage.tsx",
+      "overlay": "src/pages/ecosystem/EcosystemGraphPage.tsx",
+      "before": "4349bd34fe4fcfb8422dffa51436de938ba4ab551891c8d1c661dc0537179f51",
+      "after": "e4a97e0a6c097f8dbdb50c9cbf4a0bee62fc2ecca7504b4badb997aca4dcb3fc"
+    },
+    {
+      "path": "gateway/src/pages/rooms/RoomsGraphPage.tsx",
+      "overlay": "src/pages/rooms/RoomsGraphPage.tsx",
+      "before": "5ae99fb34457041975810914f6cade278970201d42addb7fa118921f8489e241",
+      "after": "28b92139777fa190b90045cddc43b613512f530e6429bca86797da79c4087fbd"
+    },
+    {
+      "path": "gateway/src/pages/rooms/RoomsPage.tsx",
+      "overlay": "src/pages/rooms/RoomsPage.tsx",
+      "before": "560d2f74fc91b7ce65065ab41452216c7ec099cd67b6c736cd2e1dabd17238c5",
+      "after": "0b7977f477020afafb0ea6b0b90b4d29a633483a166afc97ad35a748b0da40d8"
+    },
+    {
+      "path": "gateway/src/pages/agents/AgentsPage.tsx",
+      "overlay": "src/pages/agents/AgentsPage.tsx",
+      "before": "aa92320136c8872ac8868c996a322f1eaa686c5f8907676d07b1b6a625f85078",
+      "after": "fb2b30544be88f18d7f83f2c2a98c255c6c820007e2768842a8141dc056afe98"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "checkedAt": "2026-11-05T05:35:20.211215+00:00",
+  "surface": "Switch Gateway at http://127.0.0.1:8765",
+  "build": "passed: TypeScript and Vite production build",
+  "focusedTests": {
+    "files": 3,
+    "passed": 16
+  },
+  "browserChecks": [
+    {
+      "step": 1,
+      "view": "Rooms and Agents",
+      "result": "Headers aligned; desktop toolbars and filter spacing inspected."
+    },
+    {
+      "step": 2,
+      "view": "Machines",
+      "result": "Breadcrumb present; controller online; both agents running."
+    },
+    {
+      "step": 3,
+      "view": "Ecosystem graph",
+      "result": "Fit displays all five nodes and readable labels; plus 133% to 167%; minus returns 133%."
+    },
+    {
+      "step": 4,
+      "view": "Rooms graph",
+      "result": "Fit works; plus 169% to 211%; minus returns 169%; singular count and UTF-8 separators correct."
+    },
+    {
+      "step": 5,
+      "view": "390px mobile",
+      "result": "Rooms and Ecosystem document width equals viewport width (390px); diagram controls remain visible."
+    }
+  ],
+  "finalBundle": "index-jzUA48BP.js",
+  "finalBundleConsoleErrors": 0,
+  "savedRecoveryEvidence": "consistency check passed after restart",
+  "overlay": "11 files; base revision and checksums validated; idempotent apply passed",
+  "screenshotsSaved": false,
+  "captureLimit": "Screenshots inspected in the browser tool; A-drive capture saving unavailable. No formal saved screenshot audit or full accessibility certification is claimed.",
+  "limitations": [
+    "Dense tables use their own horizontal scrollbar to expose remaining columns.",
+    "Existing Vite warning: main JavaScript chunk exceeds 500 kB.",
+    "Independent fresh-machine bootstrap not executed."
+  ],
+  "publication": "paused at user request"
+}

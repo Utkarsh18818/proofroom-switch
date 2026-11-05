@@ -1,0 +1,638 @@
+{
+  "capturedAt": "2026-11-05T05:01:18.315Z",
+  "environment": "controlled-local-exercise",
+  "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+  "transcriptHasMore": false,
+  "liveDiagnosticProposal": true,
+  "liveIndependentReview": true,
+  "authenticatedHumanApproval": true,
+  "independentOutcomeReply": true,
+  "recovered": true,
+  "agents": [
+    {
+      "id": "2984437a-4197-4af5-b254-ffea4cc2f156",
+      "name": "proofroom-diagnostic",
+      "provider": "codex",
+      "directory": "A:/FlipTheSwitch/project/agents/diagnostic",
+      "autoApprove": false,
+      "process": "running",
+      "attached": true
+    },
+    {
+      "id": "0e040a50-07b8-4c93-a869-8dd6b5030319",
+      "name": "proofroom-review",
+      "provider": "codex",
+      "directory": "A:/FlipTheSwitch/project/agents/review",
+      "autoApprove": false,
+      "process": "running",
+      "attached": true
+    }
+  ],
+  "state": {
+    "schemaVersion": 1,
+    "id": "7b6fefab-9e24-40b0-92c6-3a4188c616d1",
+    "revision": 2,
+    "createdAt": "2026-11-05T04:38:46.878Z",
+    "worker": {
+      "paused": false,
+      "generation": 2
+    },
+    "deliveries": [
+      {
+        "id": "delivery-1",
+        "status": "delivered",
+        "deliveredAt": "2026-11-05T04:45:46.700Z"
+      },
+      {
+        "id": "delivery-2",
+        "status": "delivered",
+        "deliveredAt": "2026-11-05T04:45:46.701Z"
+      },
+      {
+        "id": "delivery-3",
+        "status": "delivered",
+        "deliveredAt": "2026-11-05T04:45:46.701Z"
+      }
+    ],
+    "proposal": {
+      "id": "0c5d1748-8951-4c67-90f4-e0a0f031b905",
+      "action": "resume-worker",
+      "incidentId": "7b6fefab-9e24-40b0-92c6-3a4188c616d1",
+      "evidence": {
+        "incidentId": "7b6fefab-9e24-40b0-92c6-3a4188c616d1",
+        "revision": 0,
+        "paused": true,
+        "generation": 1,
+        "queued": 3,
+        "delivered": 0,
+        "total": 3
+      },
+      "evidenceHash": "fa1746b50db6d7141451709304db951b439128f319823817911cfb883cec5aa0",
+      "by": "diagnostic-agent",
+      "at": "2026-11-05T04:40:53.804Z",
+      "reason": "Worker is paused while deliveries remain queued.",
+      "expectedOutcome": "Worker accepts processing; delivery progress must be checked separately."
+    },
+    "review": {
+      "proposalId": "0c5d1748-8951-4c67-90f4-e0a0f031b905",
+      "evidenceHash": "fa1746b50db6d7141451709304db951b439128f319823817911cfb883cec5aa0",
+      "by": "review-agent",
+      "at": "2026-11-05T04:42:15.099Z"
+    },
+    "approval": {
+      "proposalId": "0c5d1748-8951-4c67-90f4-e0a0f031b905",
+      "evidenceHash": "fa1746b50db6d7141451709304db951b439128f319823817911cfb883cec5aa0",
+      "by": "0c163118-ac2e-4485-9d24-4e4307d56131",
+      "at": "2026-11-05T04:44:28.778Z"
+    },
+    "execution": {
+      "proposalId": "0c5d1748-8951-4c67-90f4-e0a0f031b905",
+      "at": "2026-11-05T04:45:38.200Z",
+      "revision": 1
+    },
+    "verification": {
+      "recovered": true,
+      "at": "2026-11-05T04:46:23.656Z",
+      "evidence": {
+        "incidentId": "7b6fefab-9e24-40b0-92c6-3a4188c616d1",
+        "revision": 2,
+        "paused": false,
+        "generation": 2,
+        "queued": 0,
+        "delivered": 3,
+        "total": 3
+      }
+    },
+    "events": [
+      {
+        "type": "incident-created",
+        "at": "2026-11-05T04:38:46.880Z"
+      },
+      {
+        "type": "recovery-proposed",
+        "at": "2026-11-05T04:40:53.805Z",
+        "proposalId": "0c5d1748-8951-4c67-90f4-e0a0f031b905",
+        "by": "diagnostic-agent"
+      },
+      {
+        "type": "proposal-reviewed",
+        "at": "2026-11-05T04:42:15.100Z",
+        "proposalId": "0c5d1748-8951-4c67-90f4-e0a0f031b905",
+        "by": "review-agent"
+      },
+      {
+        "type": "operator-approved",
+        "at": "2026-11-05T04:44:28.778Z",
+        "proposalId": "0c5d1748-8951-4c67-90f4-e0a0f031b905",
+        "by": "0c163118-ac2e-4485-9d24-4e4307d56131"
+      },
+      {
+        "type": "recovery-executed",
+        "at": "2026-11-05T04:45:38.200Z",
+        "proposalId": "0c5d1748-8951-4c67-90f4-e0a0f031b905"
+      },
+      {
+        "type": "deliveries-processed",
+        "at": "2026-11-05T04:45:46.701Z",
+        "count": 3
+      },
+      {
+        "type": "recovery-verified",
+        "at": "2026-11-05T04:45:54.712Z",
+        "evidence": {
+          "incidentId": "7b6fefab-9e24-40b0-92c6-3a4188c616d1",
+          "revision": 2,
+          "paused": false,
+          "generation": 2,
+          "queued": 0,
+          "delivered": 3,
+          "total": 3
+        }
+      },
+      {
+        "type": "recovery-verified",
+        "at": "2026-11-05T04:46:23.656Z",
+        "evidence": {
+          "incidentId": "7b6fefab-9e24-40b0-92c6-3a4188c616d1",
+          "revision": 2,
+          "paused": false,
+          "generation": 2,
+          "queued": 0,
+          "delivered": 3,
+          "total": 3
+        }
+      }
+    ]
+  },
+  "messages": [
+    {
+      "messageId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "seq": 12,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:39:40.513062+00:00",
+      "sender": {
+        "clientId": "dddd7f25-2268-45fd-80dc-edb061c1fe71",
+        "name": "Admin",
+        "kind": "human",
+        "agentId": null,
+        "userId": "0c163118-ac2e-4485-9d24-4e4307d56131"
+      },
+      "source": "console",
+      "body": "@proofroom-diagnostic Please inspect the controlled local fixture now. Incident 7b6fefab-9e24-40b0-92c6-3a4188c616d1. Collect current evidence, propose only if justified, and hand off to @proofroom-review for independent review. Stop before human approval and execution. Reply through Switch in this thread. This is a project demo test in ProofRoom Demo only.",
+      "format": null,
+      "threadRootId": null,
+      "attachments": [],
+      "clientTxn": "689c67fd-1c38-4d65-b26c-78e939db5286:0",
+      "namedAgentIds": [
+        "0e040a50-07b8-4c93-a869-8dd6b5030319",
+        "2984437a-4197-4af5-b254-ffea4cc2f156"
+      ],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 14,
+      "threadLastReplySeq": 28
+    },
+    {
+      "messageId": "sw_1894fb4e39b24357b55a93e0a1c0bb66",
+      "seq": 13,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:39:40.948117+00:00",
+      "sender": {
+        "clientId": "31c80a4f-94d7-466d-a7ff-b6570cf8a52f",
+        "name": "proofroom-review",
+        "kind": "agent",
+        "agentId": "0e040a50-07b8-4c93-a869-8dd6b5030319",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "Starting a session to handle this — one moment.",
+      "format": null,
+      "threadRootId": null,
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_3ba3c5404c9e41b9b71adae960f5adab",
+      "seq": 14,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:39:40.955171+00:00",
+      "sender": {
+        "clientId": "3ae18c17-dbea-48f6-8565-b8cffa41251e",
+        "name": "proofroom-diagnostic",
+        "kind": "agent",
+        "agentId": "2984437a-4197-4af5-b254-ffea4cc2f156",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "Starting a session to handle this — one moment.",
+      "format": null,
+      "threadRootId": null,
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_19a7db48bb104a80a19bea34704128a5",
+      "seq": 15,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:40:23.986933+00:00",
+      "sender": {
+        "clientId": "31c80a4f-94d7-466d-a7ff-b6570cf8a52f",
+        "name": "proofroom-review",
+        "kind": "agent",
+        "agentId": "0e040a50-07b8-4c93-a869-8dd6b5030319",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "I’m checking the fixture independently for review and will compare it with the diagnostic agent’s evidence.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_a233180198bf46e88bf7031a6c6fc477",
+      "seq": 16,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:40:24.709134+00:00",
+      "sender": {
+        "clientId": "3ae18c17-dbea-48f6-8565-b8cffa41251e",
+        "name": "proofroom-diagnostic",
+        "kind": "agent",
+        "agentId": "2984437a-4197-4af5-b254-ffea4cc2f156",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "On it — inspecting the controlled fixture and checking whether a proposal is justified. I’ll stop after the independent review handoff, before approval or execution.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_1f5c17438a36471797d05ff5a3d1cc5b",
+      "seq": 17,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:40:46.921741+00:00",
+      "sender": {
+        "clientId": "31c80a4f-94d7-466d-a7ff-b6570cf8a52f",
+        "name": "proofroom-review",
+        "kind": "agent",
+        "agentId": "0e040a50-07b8-4c93-a869-8dd6b5030319",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "@proofroom-diagnostic Independent inspect confirms incident 7b6fefab-9e24-40b0-92c6-3a4188c616d1 at revision 0: paused=true, generation=1, queued=3, delivered=0, total=3. Please hand off your proposal ID and cited evidence when ready; I need those before recording review.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [
+        "2984437a-4197-4af5-b254-ffea4cc2f156"
+      ],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_e7c4c0e6b6b341e0aedc46d75ff0d946",
+      "seq": 18,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:41:04.389421+00:00",
+      "sender": {
+        "clientId": "3ae18c17-dbea-48f6-8565-b8cffa41251e",
+        "name": "proofroom-diagnostic",
+        "kind": "agent",
+        "agentId": "2984437a-4197-4af5-b254-ffea4cc2f156",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "Confirmed incident `7b6fefab-9e24-40b0-92c6-3a4188c616d1`: revision `0`, paused `true`, queued `3`, delivered `0` (generation `1`). The paused worker with pending deliveries justifies `resume-worker`.\n\nCreated proposal `0c5d1748-8951-4c67-90f4-e0a0f031b905` as diagnostic-agent, evidence hash `fa1746b50db6d7141451709304db951b439128f319823817911cfb883cec5aa0`. Stopping before human approval and execution as requested.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_02d82977e7d24954af9255d58dbb9d0f",
+      "seq": 19,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:41:04.634960+00:00",
+      "sender": {
+        "clientId": "3ae18c17-dbea-48f6-8565-b8cffa41251e",
+        "name": "proofroom-diagnostic",
+        "kind": "agent",
+        "agentId": "2984437a-4197-4af5-b254-ffea4cc2f156",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "@proofroom-review Please independently inspect the controlled fixture at A:/FlipTheSwitch/project using --state A:/FlipTheSwitch/project/.state and review proposal `0c5d1748-8951-4c67-90f4-e0a0f031b905` as review-agent if justified. Incident `7b6fefab-9e24-40b0-92c6-3a4188c616d1`; observed revision 0, paused true, queued 3, delivered 0, generation 1. Evidence hash `fa1746b50db6d7141451709304db951b439128f319823817911cfb883cec5aa0`. Report your independent result here; stop if evidence differs. No approval or execution is authorized in this handoff.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [
+        "0e040a50-07b8-4c93-a869-8dd6b5030319"
+      ],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_6ac8679614e6413fba2b12b437f3d212",
+      "seq": 20,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:41:13.617411+00:00",
+      "sender": {
+        "clientId": "3ae18c17-dbea-48f6-8565-b8cffa41251e",
+        "name": "proofroom-diagnostic",
+        "kind": "agent",
+        "agentId": "2984437a-4197-4af5-b254-ffea4cc2f156",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "The handoff is posted above: proposal `0c5d1748-8951-4c67-90f4-e0a0f031b905`, action `resume-worker`, evidence hash `fa1746b50db6d7141451709304db951b439128f319823817911cfb883cec5aa0`. Its evidence exactly matches your independent inspection: incident `7b6fefab-9e24-40b0-92c6-3a4188c616d1`, revision 0, paused=true, generation=1, queued=3, delivered=0, total=3. Review may proceed under the existing handoff; approval and execution remain stopped.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_abff330ddd524637ac5b58d104788b89",
+      "seq": 21,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:41:25.592020+00:00",
+      "sender": {
+        "clientId": "31c80a4f-94d7-466d-a7ff-b6570cf8a52f",
+        "name": "proofroom-review",
+        "kind": "agent",
+        "agentId": "0e040a50-07b8-4c93-a869-8dd6b5030319",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "Independent inspection of incident 7b6fefab-9e24-40b0-92c6-3a4188c616d1 reports revision 0, paused=true, generation=1, queued=3, delivered=0, total=3. Review is pending the diagnostic proposal and cited evidence; I have requested that handoff. No recovery is verified.\n\nOnce the proposal is independently reviewed, please inspect it and approve it in the signed-in ProofRoom UI. Local actor labels are not authenticated identities. Approval and execution remain stopped as requested; after execution and queue processing, I will run independent verification.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_274e537a53914c27b6a7ede1b7c2b3d2",
+      "seq": 22,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:42:21.785289+00:00",
+      "sender": {
+        "clientId": "31c80a4f-94d7-466d-a7ff-b6570cf8a52f",
+        "name": "proofroom-review",
+        "kind": "agent",
+        "agentId": "0e040a50-07b8-4c93-a869-8dd6b5030319",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "Independent review recorded as review-agent at `2026-11-05T04:42:15.099Z` for proposal `0c5d1748-8951-4c67-90f4-e0a0f031b905` (`resume-worker`). Fresh inspection matches the diagnostic evidence: incident `7b6fefab-9e24-40b0-92c6-3a4188c616d1`, revision 0, paused=true, generation=1, queued=3, delivered=0, total=3. Recomputed hash matches: `fa1746b50db6d7141451709304db951b439128f319823817911cfb883cec5aa0`.\n\nPlease inspect this proposal and approve it in the signed-in ProofRoom UI when ready. Local actor labels are not authenticated identities. I stopped before approval and execution; recovery remains unverified. After execution and processing, I will independently run verify against the same fixture state.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_dacb9fcfa62443bb87f7c3d68cd6a997",
+      "seq": 23,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:44:58.130007+00:00",
+      "sender": {
+        "clientId": "dddd7f25-2268-45fd-80dc-edb061c1fe71",
+        "name": "Admin",
+        "kind": "human",
+        "agentId": null,
+        "userId": "0c163118-ac2e-4485-9d24-4e4307d56131"
+      },
+      "source": "console",
+      "body": "@proofroom-diagnostic The operator has approved reviewed proposal 0c5d1748-8951-4c67-90f4-e0a0f031b905 for incident 7b6fefab-9e24-40b0-92c6-3a4188c616d1 in the signed-in ProofRoom UI. Independently inspect the current saved approval and evidence. If the CLI gate passes, run execute and work against A:/FlipTheSwitch/project/.state. Then hand off independent outcome verification to the reviewer agent in this thread. Do not approve, initialize, or edit state files. Report actual results and any refusal.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": "a9529483-3e12-41b8-bf5c-5b209dd5ccef:0",
+      "namedAgentIds": [
+        "2984437a-4197-4af5-b254-ffea4cc2f156"
+      ],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_b17ffb891b24422f93171ca7ea0fcfd8",
+      "seq": 24,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:45:03.627711+00:00",
+      "sender": {
+        "clientId": "3ae18c17-dbea-48f6-8565-b8cffa41251e",
+        "name": "proofroom-diagnostic",
+        "kind": "agent",
+        "agentId": "2984437a-4197-4af5-b254-ffea4cc2f156",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "Checking the saved approval and current evidence before execution. I’ll report the CLI gate result and hand off outcome verification after processing.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_2f583ca0e93b41f19da18d5efee074a5",
+      "seq": 25,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:46:04.799184+00:00",
+      "sender": {
+        "clientId": "3ae18c17-dbea-48f6-8565-b8cffa41251e",
+        "name": "proofroom-diagnostic",
+        "kind": "agent",
+        "agentId": "2984437a-4197-4af5-b254-ffea4cc2f156",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "Saved review and operator approval both matched proposal `0c5d1748-8951-4c67-90f4-e0a0f031b905` and evidence hash `fa1746b50db6d7141451709304db951b439128f319823817911cfb883cec5aa0`; current evidence remained at revision 0 before execution. Approval was recorded at `2026-11-05T04:44:28.778Z`.\n\nThe CLI gate passed: execution completed at `04:45:38.200Z`, then work processed 3 deliveries. My verification returned `recovered=true`: incident `7b6fefab-9e24-40b0-92c6-3a4188c616d1`, revision 2, paused=false, generation=2, queued=0, delivered=3/3. No operation was refused. Independent outcome verification is next.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_b3deb1a52ff8486183c6e4f86ece967a",
+      "seq": 26,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:46:04.883561+00:00",
+      "sender": {
+        "clientId": "3ae18c17-dbea-48f6-8565-b8cffa41251e",
+        "name": "proofroom-diagnostic",
+        "kind": "agent",
+        "agentId": "2984437a-4197-4af5-b254-ffea4cc2f156",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "@proofroom-review Please independently inspect and run verify against A:/FlipTheSwitch/project/.state, then report the actual outcome here. Operator-reported UI approval was checked in saved state for proposal `0c5d1748-8951-4c67-90f4-e0a0f031b905`; CLI execute passed its gate and work processed 3. My verify returned recovered=true at revision 2, paused=false, generation=2, queued=0, delivered=3/3 for incident `7b6fefab-9e24-40b0-92c6-3a4188c616d1`. Do not execute again or approve; report any discrepancy honestly.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [
+        "0e040a50-07b8-4c93-a869-8dd6b5030319"
+      ],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_5468fa66845d474db304e0c9ad896f2e",
+      "seq": 27,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:46:10.256653+00:00",
+      "sender": {
+        "clientId": "31c80a4f-94d7-466d-a7ff-b6570cf8a52f",
+        "name": "proofroom-review",
+        "kind": "agent",
+        "agentId": "0e040a50-07b8-4c93-a869-8dd6b5030319",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "I’m checking the current fixture and running independent verification of the reported recovery.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_f1b03996fbf7411592a4e1397bb27361",
+      "seq": 28,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:46:29.428005+00:00",
+      "sender": {
+        "clientId": "31c80a4f-94d7-466d-a7ff-b6570cf8a52f",
+        "name": "proofroom-review",
+        "kind": "agent",
+        "agentId": "0e040a50-07b8-4c93-a869-8dd6b5030319",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "Independent verification passed at `2026-11-05T04:46:23.656Z`: `verify --state A:/FlipTheSwitch/project/.state` exited 0 with `recovered=true`. Fresh inspect and verification agree for incident `7b6fefab-9e24-40b0-92c6-3a4188c616d1`: revision 2, paused=false, generation=2, queued=0, delivered=3, total=3. No discrepancy with the diagnostic outcome.\n\nThis confirms recovery of the controlled local fixture only. It does not prove external webhook delivery or authenticated approval identity; local actor labels are not authenticated identities, and saved state is not tamper-proof.",
+      "format": null,
+      "threadRootId": "sw_634db21693814232bc74f5c4fb7fff15",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    },
+    {
+      "messageId": "sw_4c3a0972f7364b728511b773157b2fd6",
+      "seq": 29,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:58:41.524123+00:00",
+      "sender": {
+        "clientId": "dddd7f25-2268-45fd-80dc-edb061c1fe71",
+        "name": "Admin",
+        "kind": "human",
+        "agentId": null,
+        "userId": "0c163118-ac2e-4485-9d24-4e4307d56131"
+      },
+      "source": "console",
+      "body": "@proofroom-diagnostic Post-upgrade read-only connection check: inspect the existing fixture and report its incident ID, revision, paused flag, queued and delivered counts in one short room reply. Do not initialize, propose, review, approve, execute, process or verify anything; do not change the fixture. This checks the signed controller heartbeat fix only.",
+      "format": null,
+      "threadRootId": null,
+      "attachments": [],
+      "clientTxn": "d12ef488-f6ab-448b-854a-5cce06ec32d4:0",
+      "namedAgentIds": [
+        "2984437a-4197-4af5-b254-ffea4cc2f156"
+      ],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 1,
+      "threadLastReplySeq": 30
+    },
+    {
+      "messageId": "sw_7392a609b17844b790641b77d362c3d3",
+      "seq": 30,
+      "roomId": "60645f21-5c2b-4383-a56b-357cf6402e94",
+      "sentAt": "2026-11-05T04:59:02.545274+00:00",
+      "sender": {
+        "clientId": "3ae18c17-dbea-48f6-8565-b8cffa41251e",
+        "name": "proofroom-diagnostic",
+        "kind": "agent",
+        "agentId": "2984437a-4197-4af5-b254-ffea4cc2f156",
+        "userId": null
+      },
+      "source": "switch",
+      "body": "Read-only inspection: incident `7b6fefab-9e24-40b0-92c6-3a4188c616d1`, revision `2`, paused=`false`, queued=`0`, delivered=`3`. Fixture unchanged.",
+      "format": null,
+      "threadRootId": "sw_4c3a0972f7364b728511b773157b2fd6",
+      "attachments": [],
+      "clientTxn": null,
+      "namedAgentIds": [],
+      "namedUserIds": [],
+      "mentions": [],
+      "threadReplyCount": 0,
+      "threadLastReplySeq": null
+    }
+  ]
+}

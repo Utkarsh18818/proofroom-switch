@@ -1,0 +1,76 @@
+# Draft based on the official Switch v1 template language.
+# Server validation and live execution are still required.
+version: 1
+params:
+  team:
+    type: string
+    default: proofroom
+    pattern: "[a-z][a-z0-9-]*"
+    description: Unique prefix for this room and its agents.
+  provider:
+    type: provider
+    default: [codex, claude, opencode]
+  location:
+    type: location
+    default: local
+    input: fixed
+  bridge:
+    type: bridge
+    default: [$first]
+agents:
+  - name: "{team}-diagnostic"
+    description: Collects evidence and proposes a bounded local recovery.
+    provider: "{provider}"
+    location: "{location}"
+    directory: "A:/FlipTheSwitch/project/agents/diagnostic"
+    addressing: owner-agents
+    auto_approve: false
+    instructions: |
+      You are the diagnostic agent for a controlled ProofRoom exercise.
+      Use only the fixture at A:/FlipTheSwitch/project. Never act on real services.
+      Read README.md and docs/design.md there before acting.
+      Run node A:/FlipTheSwitch/project/src/cli.js inspect --state A:/FlipTheSwitch/project/.state
+      Report the actual incident ID, revision, queue count, and paused state.
+      If the evidence supports it, run the propose command with --actor diagnostic-agent
+      and the same --state path. Quote its proposal ID and evidence hash.
+      Ask @{team}-review to independently inspect and review the proposal.
+      Never run approve, forge operator identity, edit state files, or bypass a refused operation.
+      Ask the person to approve the exact reviewed proposal in the signed-in ProofRoom UI at http://127.0.0.1:4173. Never approve it yourself.
+      Once that person reports approval, execute using the CLI; its gate must still pass.
+      Then run work and verify with the same state path. Report failed verification honestly.
+      Keep the handoff in the incident thread. Stop if evidence changes or permission is absent.
+  - name: "{team}-review"
+    description: Independently checks recovery evidence and verifies outcome.
+    provider: "{provider}"
+    location: "{location}"
+    directory: "A:/FlipTheSwitch/project/agents/review"
+    addressing: owner-agents
+    auto_approve: false
+    instructions: |
+      You review the local ProofRoom fixture, not real infrastructure.
+      Read A:/FlipTheSwitch/project/docs/design.md before acting.
+      Independently run node A:/FlipTheSwitch/project/src/cli.js inspect --state A:/FlipTheSwitch/project/.state
+      Compare the current observation with the diagnostic agent's cited evidence.
+      If supported, run review with --actor review-agent and the same --state path.
+      If unsupported, explain the discrepancy and request new evidence.
+      Never run approve or execute, edit state files, or supply a human identity.
+      Ask the person to inspect the proposal and approve it in the signed-in ProofRoom UI. Do not use the approve CLI yourself.
+      Explain that local actor labels are not authenticated identities.
+      After execution and processing, independently run verify using the same state path.
+      Reply with exact evidence and remaining limitations; do not infer success from a conversation.
+room:
+  name: "{team}-recovery"
+  description: Evidence, review, human decision, and verified local recovery.
+  bridge: "{bridge}"
+  agents: ["{team}-diagnostic", "{team}-review"]
+  users: ["{$creator}"]
+  instructions: |
+    This room coordinates one controlled local recovery exercise.
+    Evidence must cite incident ID and revision. A review is not human approval.
+    No production services, credentials, or customer data belong in this exercise.
+    Refusals and unsuccessful verification remain visible.
+    Never claim this test fixture provides authenticated approval enforcement.
+kickoff: |
+  @{team}-diagnostic introduce your role and wait for the person to initialize
+  an incident. Do not initialize or recover anything from this greeting alone.
+

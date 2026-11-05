@@ -1,0 +1,7 @@
+{
+  "signingKey": "release-2026-10",
+  "signatureVerified": true,
+  "sha256": "3d4179981f13f977e178b476857a62e864ca71c01af1839239b4afc70688ac6d",
+  "version": "0.31.1-dev.311.g63c85ad",
+  "cliPath": "A:\\FlipTheSwitch\\runtime\\controller\\releases\\0.31.1-dev.311.g63c85ad\\package\\cli.mjs"
+}

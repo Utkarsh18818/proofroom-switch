@@ -1,0 +1,15 @@
+{
+  "name": "proofroom",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Evidence-backed recovery workflow for Switch rooms",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test --test-concurrency=1",
+    "cli": "node src/cli.js",
+    "start": "node src/server.js"
+  }
+}

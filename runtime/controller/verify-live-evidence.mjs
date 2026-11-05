@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const root='A:/FlipTheSwitch';
+const evidence=JSON.parse(readFileSync(root+'/evidence/live-agent-recovery.json','utf8').replace(/^\uFEFF/,''));
+const live=JSON.parse(readFileSync(root+'/project/.state/incident.json','utf8'));
+assert.deepEqual(live,evidence.state,'Exported state must match the persisted fixture');
+assert.equal(live.review.proposalId,live.proposal.id);assert.equal(live.approval.proposalId,live.proposal.id);
+assert.equal(live.review.evidenceHash,live.proposal.evidenceHash);assert.equal(live.approval.evidenceHash,live.proposal.evidenceHash);
+assert.equal(live.verification.recovered,true);assert.equal(live.worker.paused,false);
+assert.equal(live.deliveries.filter(d=>d.status==='delivered').length,3);
+assert.equal(live.deliveries.filter(d=>d.status==='queued').length,0);
+const reviewer=evidence.agents.find(a=>a.name==='proofroom-review');
+assert.ok(evidence.messages.some(m=>m.sender?.agentId===reviewer.id&&m.body.includes(live.id)&&/independent verification passed/i.test(m.body)&&/recovered=true/i.test(m.body)));
+console.log('PASS saved proposal, review, approval, current fixture and independent reviewer reply agree.');

@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-11-05T10:34:23.9196749+05:30",
+  "controllerVersion": "0.31.1-dev.311.g63c85ad",
+  "controllerOnline": true,
+  "connectedAt": "2026-11-05T04:55:43.852454Z",
+  "observedSeconds": 521.0,
+  "reconnectWarnings": 0,
+  "agents": [
+    {
+      "agent_id": "2984437a-4197-4af5-b254-ffea4cc2f156",
+      "process": "running",
+      "attached": true
+    },
+    {
+      "agent_id": "0e040a50-07b8-4c93-a869-8dd6b5030319",
+      "process": "running",
+      "attached": true
+    }
+  ],
+  "archiveSha256": "3d4179981f13f977e178b476857a62e864ca71c01af1839239b4afc70688ac6d",
+  "officialSignatureVerified": true,
+  "readOnlyAgentReplySeq": 30,
+  "fixtureRecovered": true
+}

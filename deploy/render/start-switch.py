@@ -22,4 +22,6 @@ async def setup():
     finally: await c.close()
 asyncio.run(setup())
 os.chdir(base/".render/switch")
-os.execv(str(base/".render/switch/core/.venv/bin/python"),["python","-m","switch_core.main"])
+exe=str(base/".render/switch/core/.venv/bin/python")
+os.environ["PYTHONPATH"]=str(base/".render/switch/core")
+os.execv(exe,[exe,"-m","switch_core.main"])

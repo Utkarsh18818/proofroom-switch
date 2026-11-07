@@ -36,6 +36,17 @@ export async function createApp({stateDir=process.env.PROOFROOM_STATE_DIR||resol
       const sessionId=(req.headers.cookie||'').split(';').map(v=>v.trim()).find(v=>v.startsWith('proofroom_session='))?.slice(18);
       let session=sessions.get(sessionId);
       if(session && session.expires<Date.now()){sessions.delete(sessionId);session=null;}
+      if(path.startsWith('/api/demo/')){
+        if(req.method!=='GET')throw new HttpError(405,'The public demo is read only. Sign in to operate your own exercise.');
+        const endpoint=path.slice('/api/demo/'.length);
+        if(!['state','integrations','history','export'].includes(endpoint))throw new HttpError(404,'Demo endpoint not found.');
+        const saved=JSON.parse(await readFile(resolve(sourceRoot,'../../evidence/live-agent-recovery.json'),'utf8'));
+        if(saved.state?.schemaVersion!==1 || !saved.state?.verification?.recovered)throw new HttpError(503,'Verified demo evidence is unavailable.');
+        if(endpoint==='state')return json(res,200,{state:saved.state,observation:observe(saved.state),evidenceHash:fingerprint(saved.state),operator:{name:'Reviewer',readOnly:true},recordedAt:saved.capturedAt,messages:saved.messages,agents:saved.agents.map(a=>({id:a.id,name:a.name,provider:a.provider}))});
+        if(endpoint==='integrations')return json(res,200,{recorded:true,switchHealthy:false,agentStatusAvailable:false,agents:[],bridges:[]});
+        if(endpoint==='history')return json(res,200,{records:[]});
+        return json(res,200,saved,{'Content-Disposition':'attachment; filename="proofroom-verified-run.json"'});
+      }
       if(path==='/api/config'&&req.method==='GET')return json(res,200,{gatewayUrl:gatewayUrl.href,hosted:!!publicUrl});
       if(path==='/api/login'&&req.method==='POST'){
         const now=Date.now();

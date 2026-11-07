@@ -25,3 +25,5 @@ main{max-width:1600px;margin:auto;padding:37px 38px 28px;min-height:calc(100vh -
 @media(max-width:980px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stat-value{font-size:29px}.stat-value small{font-size:14px}}
 @media(max-width:700px){.page-heading p{font-size:11px}.incident-description,.timeline-body p{font-size:11px}.member-status{font-size:9px}.incident-meta{font-size:9px}}
 @media(max-width:700px){.sidebar nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:15px -6px -6px}.nav-item{min-width:0;white-space:normal;flex-direction:column;font-size:9px;line-height:1.4;padding:8px 3px;gap:4px}.nav-icon{font-size:15px}.page-heading{display:block}.heading-actions{margin-top:16px;align-items:stretch;flex-direction:row}.stat-value small{white-space:nowrap}.login-story h1{font-size:40px}}
+
+.demo-message{padding:14px 0;border-bottom:1px solid #e1e6e2}.demo-message summary{cursor:pointer;font-weight:600}.demo-message pre{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font:13px/1.65 monospace;max-height:420px;overflow:auto;padding:12px;background:#f5f7f2;border-radius:8px}

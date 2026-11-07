@@ -58,7 +58,7 @@ has not yet been verified.
 
 ## Validation
 
-All 18 current automated product tests passed. Two live helper guard checks refused replay
+All 19 current automated product tests passed. Two live helper guard checks refused replay
 against the completed exercise without changing its bytes. An evidence consistency
 check matched the saved run with current state and the actual reviewer reply.
 
@@ -77,8 +77,7 @@ There is no tamper-proof ledger or separately isolated production execution brok
 No provider credentials, bot tokens, private runtime data or existing upstream
 checkout are distributed here. [Third-party notices](project/NOTICES.md).
 
-No public video URL, hosted application or final hackathon entry is claimed by this
-source snapshot. No original-source license has been selected by the owner yet;
+No public video URL or final hackathon entry is claimed by this source snapshot. No original-source license has been selected by the owner yet;
 third-party license terms remain included with their assets.
 
 ### Gateway UI overlay
@@ -92,3 +91,7 @@ Includes a checksum-guarded local Switch Gateway UI overlay: readable graph labe
 ## Render hosting
 
 [Native free deployment instructions](deploy/render/README.md) and [Blueprint](render.yaml). Cloud setup creates a separate Switch server; local agents and Discord are not migrated automatically. Free hosting has sleep, ephemeral fixture storage and database expiration limits.
+
+## Reviewer access
+
+[Explore the verified run without a password](https://proofroom-utkarsh18818.onrender.com/?demo=1). The login page also has an Explore verified demo button. This is a read-only view of the actual November 5 local run, not a new cloud agent execution. It exposes only the already-published evidence bundle, not the current operator workspace. Evidence export is public; all operator mutations still require sign-in.

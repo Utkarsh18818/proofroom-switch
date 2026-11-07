@@ -111,3 +111,21 @@ test('deployment origins reject insecure or credential-bearing configuration',as
  await assert.rejects(createApp({publicOrigin:'https://public.example/path'}),/HTTPS origin/);
  await assert.rejects(createApp({gatewayPublicUrl:'https://user:password@public.example'}),/Gateway public URL/);
 });
+
+
+test('public demo exposes recorded evidence and refuses writes without granting operator access',()=>fixture(async({request})=>{
+ const demo=await request('/api/demo/state');
+ assert.equal(demo.status,200);
+ assert.equal(demo.data.operator.readOnly,true);
+ assert.equal(demo.data.state.verification.recovered,true);
+ assert.equal(demo.data.observation.delivered,3);
+ assert.ok(demo.data.messages.length>0);
+ const original=JSON.stringify(demo.data.state);
+ for(const path of ['/api/demo/action','/api/demo/state','/api/demo/export','/api/demo/discord'])assert.equal((await request(path,{action:'new'})).status,405);
+ assert.equal((await request('/api/state')).status,401);
+ assert.equal((await request('/api/action',{action:'new'})).status,401);
+ assert.equal((await request('/api/demo/not-a-file')).status,404);
+ assert.equal((await request('/api/demo/integrations')).data.recorded,true);
+ assert.equal(JSON.stringify((await request('/api/demo/state')).data.state),original);
+ assert.equal((await request('/api/demo/export')).data.recovered,true);
+}));

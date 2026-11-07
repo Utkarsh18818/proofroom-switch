@@ -7,7 +7,9 @@
   const time=value=>new Date(value).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   const date=value=>new Date(value).toLocaleDateString([],{month:'short',day:'numeric'});
   async function api(path,body){
-    const response=await fetch('/api/'+path,{...(body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{})});
+    if(user?.readOnly&&body)throw new Error('This verified demo is read only. Sign in to operate an exercise.');
+    const prefix=user?.readOnly&&['state','integrations','history','export'].includes(path)?'/api/demo/':'/api/';
+    const response=await fetch(prefix+path,{...(body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{})});
     const result=await response.json();
     if(!response.ok){if(response.status===401)showLogin();throw new Error(result.error||'Request failed.');}return result;
   }
@@ -17,6 +19,7 @@
   async function openWorkspace(account){
     user=account;$('#login-view').hidden=true;$('#workspace').hidden=false;
     $('#profile-name').textContent=user.name||'Operator';
+    document.querySelector('[data-environment-label]').textContent=user.readOnly?'RECORDED RUN · READ ONLY':config.hosted?'HOSTED EXERCISE':'LOCAL EXERCISE';
     await refresh();
     clearInterval(poll);poll=setInterval(()=>{if(!busy&&!document.querySelector('dialog[open]')&&!document.querySelector('#discord-token:focus'))refresh(false);},8000);
   }
@@ -25,7 +28,7 @@
       const previous=data?.state?.events?.length;
       data=await api('state');
       try{integrations=await api('integrations');}catch{integrations={switchHealthy:false,bridges:[]};}
-      $('#sidebar-switch').textContent=integrations.switchHealthy?'Connected to Switch':'Switch needs attention';
+      $('#sidebar-switch').textContent=user.readOnly?'Recorded Switch run':integrations.switchHealthy?'Connected to Switch':'Switch needs attention';
       $('#integration-dot').hidden=integrations.bridges.some(b=>b.type==='discord');
       $('#last-sync').textContent='Last synced '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
       $('#nav-count').textContent=data.state.verification?.recovered?'0':'1';
@@ -77,14 +80,21 @@
     return `<section class="panel timeline-panel"><div class="panel-header"><h2>${full?'Evidence timeline':'Recent activity'}</h2>${full?`<span class="mono">${events.length} records</span>`:'<button class="arrow-link" data-nav="evidence">View ledger ↗</button>'}</div><div class="timeline">${events.map(e=>{const info=eventInfo[e.type]||['•',e.type,'Recorded by the local engine.','EVENT'];return `<div class="timeline-item"><span class="timeline-marker">${info[0]}</span><div class="timeline-body"><strong>${info[1]}</strong><time>${time(e.at)}</time><p>${info[2]}</p><span class="event-tag">${info[3]}</span></div></div>`;}).join('')}</div></section>`;
   }
   function decisionCard(){
+    if(user?.readOnly)return `<section class="decision-card"><span class="eyebrow">VERIFIED LOCAL RUN</span><h2>Inspect the result.</h2><p>This is the saved November 5 run with real agents and operator approval. It is not a new cloud execution.</p><button class="button primary wide" data-nav="evidence">Review evidence ↗</button></section>`;
     const a=nextAction();
     return `<section class="decision-card"><span class="eyebrow">NEXT BEST ACTION</span><div class="decision-symbol">${a.symbol}</div><h2>${a.title}</h2><p>${a.description}</p><button class="button primary wide" data-action="${a.action}" ${busy?'disabled':''}>${a.button}<span>→</span></button><div class="decision-note">Actions affect this local fixture only.</div></section>`;
   }
   function teamCard(){
+    if(user?.readOnly)return `<section class="panel"><div class="panel-header"><h2>Recorded participants</h2></div><div style="padding:20px">${(data.agents||[]).map(a=>`<p><strong>${escape(a.name)}</strong><br>${escape(a.provider)} · recorded participant</p>`).join('')}<p>Operator · personally approved the reviewed proposal</p></div></section>`;
     const connection=name=>{const agent=integrations?.agents?.find(a=>a.name===name);return agent?.attached&&agent.process==='running'?'Connected':agent?agent.process==='unknown'?'Checking status':agent.process:integrations?.agentStatusAvailable?'Setup pending':'Status unavailable';};
     return `<section class="panel"><div class="panel-header"><h2>Room participants</h2><span class="count-badge">3 roles</span></div><div class="team-list"><div class="team-member"><span class="avatar diagnostic-avatar">D</span><div><strong>Diagnostic</strong><small>Evidence & proposed action</small></div><span class="member-status waiting">${escape(connection('proofroom-diagnostic'))}</span></div><div class="team-member"><span class="avatar review-avatar">R</span><div><strong>Reviewer</strong><small>Independent verification</small></div><span class="member-status waiting">${escape(connection('proofroom-review'))}</span></div><div class="team-member"><span class="avatar operator-avatar">O</span><div><strong>You</strong><small>Approval authority</small></div><span class="member-status">Signed in</span></div></div></section>`;
   }
+  function demoTranscript(){
+    return `<section class="panel"><div class="panel-header"><h2>Actual Switch conversation</h2><span class="count-badge">Recorded</span></div><div style="padding:20px">${(data.messages||[]).filter(m=>m.seq>=12&&m.seq<=28).map(m=>{const sender=(data.agents||[]).find(a=>JSON.stringify(m.sender).includes(a.id));return `<details class="demo-message"><summary>Message ${escape(m.seq)} · ${escape(sender?.name||'Room participant')} · ${time(m.sentAt)}</summary><pre>${escape(typeof m.body==='string'?m.body:JSON.stringify(m.body))}</pre></details>`;}).join('')}</div></section>`;
+  }
   function overview(){
+    if(user?.readOnly)return heading('NO PASSWORD REQUIRED','A real run, open for review.','Recorded November 5, 2026. Inspect the actual evidence, agent handoff and independent verification.',`<a class="button secondary" href="/api/demo/export" download>↓ Download evidence</a>`)+`<div class="evidence-grid"><div class="evidence-card"><h3>DELIVERED</h3><strong>${data.observation.delivered} / ${data.observation.total}</strong><p>Controlled fixture deliveries</p></div><div class="evidence-card"><h3>QUEUED</h3><strong>${data.observation.queued}</strong><p>Independently checked</p></div><div class="evidence-card"><h3>RECOVERY</h3><strong>Verified</strong><p>${data.state.events.length} recorded evidence events</p></div></div><div class="content-grid"><div>${incidentCard()}${timeline()}</div><div class="right-stack">${decisionCard()}${teamCard()}</div></div>${demoTranscript()}`;
+
     const o=data.observation,s=data.state,st=status();
     return heading('OPERATIONS, WITH CONFIDENCE','Clarity before action.','Your incidents, evidence, and next decisions. All in one place.',`<button class="button secondary" data-export>↓ Export evidence</button><button class="button primary" data-nav="incident">Open incident room <span>↗</span></button>`)+
     `<section class="stats-grid"><div class="stat"><div class="stat-label">Open incidents <span class="stat-symbol">◉</span></div><div class="stat-value">${st.good?'0':'1'}<small> / 1 exercise</small></div><div class="stat-foot ${st.good?'good':''}"><span class="tiny-dot"></span>${st.good?'Recovery verified':'Awaiting verified recovery'}</div></div><div class="stat"><div class="stat-label">Deliveries waiting <span class="stat-symbol">≋</span></div><div class="stat-value">${o.queued.toString().padStart(2,'0')}</div><div class="stat-foot ${!o.queued?'good':''}"><span class="tiny-dot"></span>${o.delivered} of ${o.total} processed</div></div><div class="stat"><div class="stat-label">Decisions pending <span class="stat-symbol">◇</span></div><div class="stat-value">${s.review&&!s.approval?'01':'00'}</div><div class="stat-foot ${s.approval?'good':''}"><span class="tiny-dot"></span>${s.approval?'Proposal approved':s.review?'Your approval is needed':'No approval request yet'}</div></div><div class="stat"><div class="stat-label">Evidence records <span class="stat-symbol">▤</span></div><div class="stat-value">${s.events.length.toString().padStart(2,'0')}</div><div class="stat-foot good"><span class="tiny-dot"></span>Persisted on this computer</div></div></section>
@@ -101,6 +111,7 @@
     `<div class="evidence-grid"><div class="evidence-card"><h3>WORKER STATE</h3><strong>${o.paused?'Paused':'Running'}</strong><p>Generation ${o.generation} · revision ${o.revision}</p></div><div class="evidence-card"><h3>DELIVERY PROGRESS</h3><strong>${o.delivered} <small>/ ${o.total}</small></strong><p>${o.queued} deliveries remain in the local queue.</p></div><div class="evidence-card"><h3>VERIFICATION</h3><strong>${data.state.verification?.recovered?'Confirmed':data.state.verification?'Not recovered':'Not run'}</strong><p>${data.state.verification?'Last checked '+time(data.state.verification.at):'A fresh check is required after execution.'}</p></div></div><section class="panel"><div class="panel-header"><h2>Current observation</h2><span class="mono">SHA-256</span></div><div class="data-row"><span>Incident ID</span><code>${escape(data.state.id)}</code></div><div class="data-row"><span>Evidence fingerprint</span><code>${escape(data.evidenceHash)}</code></div><div class="data-row"><span>Source</span><strong>Local worker fixture · persisted state</strong></div></section>${timeline(true)}<div id="archive-region"></div><div class="notice">The ledger is stored locally and can be edited by the filesystem owner. It is an operational evidence trail, not a tamper-proof audit system.</div>`;
   }
   function integrationPage(){
+    if(user?.readOnly)return heading('RECORDED COLLABORATION','People and agents, together.','The verified run used native Switch, Discord, a diagnostic Codex agent, an independent reviewer and an operator decision.')+teamCard()+`<div class="notice">This public view shows recorded evidence. The new Render deployment uses separate accounts and does not claim those local agents are connected to its server.</div>`;
     const healthy=integrations?.switchHealthy,discord=integrations?.bridges?.find(b=>b.type==='discord');
     return heading('BRING YOUR TEAM INTO THE ROOM','Connected by design.','Switch coordinates the room. Discord brings the conversation.')+
     `<div class="integration-grid"><section class="integration-card"><span class="integration-logo">ϟ</span><h2>Switch</h2><p>The shared context layer for your people, agents, and decisions.</p>${pill(healthy?'Connected & healthy':'Needs attention',healthy)}<ul class="check-list">${Object.entries(integrations?.checks||{}).map(([key,value])=>`<li><span>${value.healthy?'✓':'!'}</span>${escape(key.replaceAll('_',' '))}</li>`).join('')}</ul><a class="button secondary" href="${escape(config.gatewayUrl)}" target="_blank" rel="noreferrer">Open Gateway <span>↗</span></a><div class="notice">${config.hosted?'Hosted on AWS with native Switch. Live agents need a controller connected to this server.':'Running directly from source on this computer. No Docker.'}</div></section>
@@ -129,6 +140,7 @@
     return new Promise(resolve=>dialog.addEventListener('close',()=>resolve(dialog.returnValue==='confirm'),{once:true}));
   }
   async function act(action){
+    if(user?.readOnly){toast('This saved demo is read only. Sign in for a separate exercise.');return;}
     if(busy||!await confirmAction(action))return;
     busy=true;render();
     try{
@@ -140,11 +152,13 @@
   }
   document.addEventListener('click',event=>{
     const nav=event.target.closest('[data-nav],[data-page]');if(nav)navigate(nav.dataset.nav||nav.dataset.page);
+    if(event.target.closest('[data-export]')&&user?.readOnly){window.location.href='/api/demo/export';return;}
     if(event.target.closest('[data-export]')){api('export',{}).then(result=>toast(config.hosted?'Evidence saved on the server. Use the evidence download to keep a copy.':'Evidence saved on A: in the deliverables folder.')).catch(error=>toast(error.message,true));}
     const action=event.target.closest('[data-action]');if(action)act(action.dataset.action);
   });
   $('#refresh').addEventListener('click',()=>refresh());
-  $('#profile').addEventListener('click',async()=>{try{await api('logout',{});showLogin();}catch(error){toast(error.message,true);}});
+  $('#profile').addEventListener('click',async()=>{if(user?.readOnly){showLogin();return;}try{await api('logout',{});showLogin();}catch(error){toast(error.message,true);}});
+  $('#explore-demo').addEventListener('click',()=>openWorkspace({name:'Reviewer',readOnly:true}).catch(error=>toast(error.message,true)));
   $('#login-form').addEventListener('submit',async event=>{
     event.preventDefault();const button=event.target.querySelector('button');button.disabled=true;$('#login-error').textContent='';
     try{const result=await api('login',{email:$('#email').value,password:$('#password').value});$('#password').value='';await openWorkspace(result.user);}
@@ -168,5 +182,5 @@
       document.querySelector('.login-form-wrap footer span').textContent='Controlled hosted environment';
       document.querySelector('.workspace-chip small').textContent='Hosted · temporary fixture';
     }
-  }).catch(()=>{}).finally(()=>api('session').then(result=>result.user?openWorkspace(result.user):showLogin()).catch(()=>showLogin()));
+  }).catch(()=>{}).finally(()=>api('session').then(result=>new URLSearchParams(location.search).get('demo')==='1'?openWorkspace({name:'Reviewer',readOnly:true}):result.user?openWorkspace(result.user):showLogin()).catch(()=>showLogin()));
 })();

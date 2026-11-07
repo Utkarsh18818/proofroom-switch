@@ -1,0 +1,55 @@
+services:
+  - type: web
+    name: proofroom-core-utkarsh18818
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: bash deploy/render/build-switch.sh
+    startCommand: .render/switch/core/.venv/bin/python deploy/render/start-switch.py
+    healthCheckPath: /health/ready
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.18
+      - key: NODE_VERSION
+        value: 24.15.0
+      - key: RENDER_DATABASE_URL
+        fromDatabase:
+          name: proofroom-db-utkarsh18818
+          property: connectionString
+      - key: DB_PASSWORD
+        generateValue: true
+      - key: SWITCH_SECRET_MATERIAL
+        generateValue: true
+      - key: AGENT_REGISTRATION_TOKEN
+        generateValue: true
+      - key: CONTROLLER_TOKEN_SECRET
+        generateValue: true
+      - key: GATEWAY_ADMIN_EMAIL
+        value: operator@proofroom.local
+      - key: GATEWAY_ADMIN_PASSWORD
+        generateValue: true
+  - type: web
+    name: proofroom-utkarsh18818
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: node --test --test-concurrency=1 project/test/*.test.js
+    startCommand: node deploy/render/start-product.mjs
+    healthCheckPath: /api/session
+    envVars:
+      - key: NODE_VERSION
+        value: 24.15.0
+      - key: SWITCH_GATEWAY_URL
+        value: https://proofroom-core-utkarsh18818.onrender.com
+      - key: PROOFROOM_STATE_DIR
+        value: /tmp/proofroom-state
+      - key: PROOFROOM_EXPORT_DIR
+        value: /tmp/proofroom-exports
+databases:
+  - name: proofroom-db-utkarsh18818
+    plan: free
+    region: singapore
+    databaseName: proofroom_switch
+    user: proofroom_owner
+    postgresMajorVersion: "17"
+    ipAllowList: []

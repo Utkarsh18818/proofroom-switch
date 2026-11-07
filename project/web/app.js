@@ -161,6 +161,12 @@
   api('config').then(result=>{
     config=result;
     document.querySelectorAll('[data-gateway-link]').forEach(link=>link.href=config.gatewayUrl);
-    if(config.hosted)document.querySelector('[data-environment-label]').textContent='AWS CONTROLLED EXERCISE';
+    if(config.hosted){
+      document.querySelector('[data-environment-label]').textContent='HOSTED EXERCISE';
+      document.querySelector('.login-form-inner > p').textContent='Sign in with this deployment’s Switch account.';
+      document.querySelector('.login-note p').textContent='Sign-in uses HTTPS to this deployment and its configured Switch server. Free demo: fixture state and exports reset on restart. Download evidence to keep a copy.';
+      document.querySelector('.login-form-wrap footer span').textContent='Controlled hosted environment';
+      document.querySelector('.workspace-chip small').textContent='Hosted · temporary fixture';
+    }
   }).catch(()=>{}).finally(()=>api('session').then(result=>result.user?openWorkspace(result.user):showLogin()).catch(()=>showLogin()));
 })();

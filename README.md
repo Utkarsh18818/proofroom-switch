@@ -88,3 +88,7 @@ Includes a checksum-guarded local Switch Gateway UI overlay: readable graph labe
 ## Build story
 
 [Read the published architecture and build story on AWS Builder Center](https://builder.aws.com/content/3Lh1ATcQwjUUeMzgpQ7cQI33kAk/proofroom-evidence-backed-ai-recovery-with-switch-and-discord).
+
+## Render hosting
+
+[Native free deployment instructions](deploy/render/README.md) and [Blueprint](render.yaml). Cloud setup creates a separate Switch server; local agents and Discord are not migrated automatically. Free hosting has sleep, ephemeral fixture storage and database expiration limits.

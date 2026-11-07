@@ -1,11 +1,12 @@
 """Apply the reviewed Gateway overlay only to the pinned, unmodified inputs."""
 from pathlib import Path
+import os
 import hashlib
 import json
 import subprocess
 
 root = Path(__file__).resolve().parent
-repo = root / "switch"
+repo = Path(os.environ.get("SWITCH_SOURCE_ROOT", str(root / "switch")))
 overlay = root / "gateway-ui"
 manifest = json.loads((overlay / "manifest.json").read_text())
 def digest(data):

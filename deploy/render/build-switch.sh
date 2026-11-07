@@ -7,5 +7,6 @@ git -C .render/switch fetch --depth 1 origin "$pin"
 git -C .render/switch checkout --detach "$pin"
 python -m pip install uv==0.13.7
 uv sync --project .render/switch/core --no-dev --locked
+SWITCH_SOURCE_ROOT="$PWD/.render/switch" python runtime/apply-gateway-ui.py
 npm --prefix .render/switch/gateway ci --no-audit --no-fund
 npm --prefix .render/switch/gateway run build

@@ -21,7 +21,43 @@ export function observe(state) {
     total: state.deliveries.length
   };
 }
-export function fingerprint(state) { return hash(observe(state)); }
+// Versioned evidence binds exact deliveries, not just aggregate counts.
+export function fingerprint(state) {
+  return hash({version: 2, observation: observe(state), deliveries: state.deliveries.map(d =>
+    ({id: d.id, status: d.status, deliveredAt: d.deliveredAt ?? null})).sort((a,b) =>
+      String(a.id).localeCompare(String(b.id)))});
+}
+function validDeliveries(state) {
+  return state.deliveries.every(d => typeof d.id === 'string' && d.id.length > 0 &&
+    ['queued','delivered'].includes(d.status)) &&
+    new Set(state.deliveries.map(d => d.id)).size === state.deliveries.length;
+}
+export function verificationStatus(state) {
+  if (!state.verification) return {status: 'not-run', recovered: false};
+  if (!state.verification.evidenceHash) return {status: 'unbound', recovered: false};
+  if (state.verification.evidenceHash !== fingerprint(state) || !validDeliveries(state))
+    return {status: 'stale', recovered: false};
+  const evidence = observe(state);
+  return {status: 'current', recovered: state.verification.recovered === true &&
+    !evidence.paused && evidence.queued === 0 && evidence.total > 0 &&
+    evidence.delivered === evidence.total};
+}
+// Compatibility for historical recordings: compare the actual saved observation;
+// never upgrade an older recording into a newly executed/version-2 verification.
+export function validateRecordedRun(saved) {
+  const state = saved?.state;
+  if (state?.schemaVersion !== 1 || !Array.isArray(state.deliveries) ||
+      !Array.isArray(state.events) || !state.worker || !state.execution ||
+      !state.verification?.recovered || !validDeliveries(state))
+    throw new Error('Verified demo evidence is inconsistent.');
+  const observation = observe(state);
+  if (observation.paused || observation.queued !== 0 || observation.total === 0 ||
+      observation.delivered !== observation.total ||
+      Object.entries(observation).some(([key,value]) => state.verification.evidence?.[key] !== value) ||
+      (state.verification.evidenceHash && verificationStatus(state).status !== 'current'))
+    throw new Error('Verified demo evidence is inconsistent.');
+  return {status: 'recorded', recovered: true};
+}
 function record(state, type, details = {}) { state.events.push({ type, at: now(), ...details }); }
 function ensureProposal(state) { if (!state.proposal) fail('No recovery proposal exists.'); }
 function ensureFresh(state) {
@@ -32,6 +68,7 @@ export function propose(state, actor) {
   if (!actor) fail('An actor is required.');
   if (state.execution) fail('Recovery already executed for this incident.');
   const evidence = observe(state);
+  if (!validDeliveries(state)) fail('Delivery identities or statuses are invalid.');
   if (!evidence.paused || evidence.queued === 0) fail('The evidence does not support resuming a paused worker with queued deliveries.');
   state.proposal = {
     id: randomUUID(), action: 'resume-worker', incidentId: state.id,
@@ -85,8 +122,8 @@ export function verify(state) {
   if (!state.execution) fail('No executed recovery to verify.');
   const evidence = observe(state);
   const recovered = !evidence.paused && evidence.queued === 0 &&
-    evidence.total > 0 && evidence.delivered === evidence.total;
-  state.verification = { recovered, at: now(), evidence };
+    evidence.total > 0 && evidence.delivered === evidence.total && validDeliveries(state);
+  state.verification = { recovered, at: now(), evidence, evidenceHash: fingerprint(state) };
   record(state, recovered ? 'recovery-verified' : 'verification-failed', { evidence });
   return state.verification;
 }

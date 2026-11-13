@@ -3,7 +3,7 @@ import {readFile,writeFile,mkdir,readdir} from 'node:fs/promises';
 import {resolve,join,extname,dirname} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {randomBytes} from 'node:crypto';
-import {createIncident,observe,fingerprint,propose,review,approve,execute,processBatch,verify} from './recovery.js';
+import {createIncident,observe,fingerprint,propose,review,approve,execute,processBatch,verify,verificationStatus,validateRecordedRun} from './recovery.js';
 import {readState,transact} from './store.js';
 import {Gateway} from './gateway.js';
 const sourceRoot=dirname(fileURLToPath(import.meta.url));
@@ -41,8 +41,10 @@ export async function createApp({stateDir=process.env.PROOFROOM_STATE_DIR||resol
         const endpoint=path.slice('/api/demo/'.length);
         if(!['state','integrations','history','export'].includes(endpoint))throw new HttpError(404,'Demo endpoint not found.');
         const saved=JSON.parse(await readFile(resolve(sourceRoot,'../../evidence/live-agent-recovery.json'),'utf8'));
-        if(saved.state?.schemaVersion!==1 || !saved.state?.verification?.recovered)throw new HttpError(503,'Verified demo evidence is unavailable.');
-        if(endpoint==='state')return json(res,200,{state:saved.state,observation:observe(saved.state),evidenceHash:fingerprint(saved.state),operator:{name:'Reviewer',readOnly:true},recordedAt:saved.capturedAt,messages:saved.messages,agents:saved.agents.map(a=>({id:a.id,name:a.name,provider:a.provider}))});
+        let recordedVerification;
+        try { recordedVerification=validateRecordedRun(saved); }
+        catch { throw new HttpError(503,'Verified demo evidence is inconsistent; recovery cannot be confirmed.'); }
+        if(endpoint==='state')return json(res,200,{state:saved.state,verificationStatus:recordedVerification,observation:observe(saved.state),evidenceHash:fingerprint(saved.state),operator:{name:'Reviewer',readOnly:true},recordedAt:saved.capturedAt,messages:saved.messages,agents:saved.agents.map(a=>({id:a.id,name:a.name,provider:a.provider}))});
         if(endpoint==='integrations')return json(res,200,{recorded:true,switchHealthy:false,agentStatusAvailable:false,agents:[],bridges:[]});
         if(endpoint==='history')return json(res,200,{records:[]});
         return json(res,200,saved,{'Content-Disposition':'attachment; filename="proofroom-verified-run.json"'});
@@ -69,7 +71,7 @@ export async function createApp({stateDir=process.env.PROOFROOM_STATE_DIR||resol
         if(path==='/api/logout'&&req.method==='POST'){sessions.delete(sessionId);return json(res,200,{ok:true},{'Set-Cookie':'proofroom_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0'+secureCookie});}
         if(path==='/api/state'&&req.method==='GET'){
           const state=await readState(stateDir);
-          return json(res,200,{state,observation:observe(state),evidenceHash:fingerprint(state),operator:session.user});
+          return json(res,200,{state,verificationStatus:verificationStatus(state),observation:observe(state),evidenceHash:fingerprint(state),operator:session.user});
         }
         if(path==='/api/integrations'&&req.method==='GET')return json(res,200,await gateway.integrations(session.cookie));
         if(path==='/api/discord'&&req.method==='POST'){

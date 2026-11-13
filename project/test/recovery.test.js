@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createIncident, observe, propose, review, approve, execute, processBatch, verify } from '../src/recovery.js';
+import { createIncident, observe, propose, review, approve, execute, processBatch, verify, verificationStatus, validateRecordedRun } from '../src/recovery.js';
 
 function reviewed() {
   const state = createIncident();
@@ -58,4 +58,41 @@ test('new proposals invalidate previous reviews and approvals', () => {
 test('a healthy worker cannot justify the paused-worker recovery', () => {
   const state = createIncident(); state.worker.paused = false;
   assert.throws(() => propose(state, 'diagnostic-agent'), /does not support/);
+});
+
+
+test('same-count delivery replacement invalidates reviewed approval', () => {
+  const state = reviewed();
+  approve(state, 'operator', state.proposal.id);
+  state.deliveries[0].id = 'different-delivery';
+  assert.throws(() => execute(state), /Evidence changed/);
+  assert.equal(state.worker.paused, true);
+});
+
+test('duplicate delivery identities cannot be certified as recovered', () => {
+  const state = reviewed();
+  approve(state, 'operator', state.proposal.id); execute(state); processBatch(state);
+  state.deliveries[1].id = state.deliveries[0].id;
+  assert.equal(verify(state).recovered, false);
+});
+
+
+test('successful verification becomes stale after same-count evidence replacement', () => {
+  const state = reviewed(); approve(state, 'operator', state.proposal.id);
+  execute(state); processBatch(state); verify(state);
+  assert.deepEqual(verificationStatus(state), {status:'current', recovered:true});
+  state.deliveries[0].id = 'replacement';
+  assert.deepEqual(verificationStatus(state), {status:'stale', recovered:false});
+  verify(state);
+  assert.deepEqual(verificationStatus(state), {status:'current', recovered:true});
+});
+
+test('legacy verification requires a recheck in a live workspace', () => {
+  const state = reviewed(); approve(state, 'operator', state.proposal.id);
+  execute(state); processBatch(state); verify(state);
+  delete state.verification.evidenceHash;
+  assert.deepEqual(verificationStatus(state), {status:'unbound', recovered:false});
+  assert.deepEqual(validateRecordedRun({state}), {status:'recorded', recovered:true});
+  state.worker.paused = true;
+  assert.throws(() => validateRecordedRun({state}), /inconsistent/);
 });

@@ -129,3 +129,18 @@ test('public demo exposes recorded evidence and refuses writes without granting 
  assert.equal(JSON.stringify((await request('/api/demo/state')).data.state),original);
  assert.equal((await request('/api/demo/export')).data.recovered,true);
 }));
+
+
+test('HTTP reads withdraw a previously verified result after evidence changes',()=>fixture(async({request,dir})=>{
+ await login(request);
+ const {state}=(await request('/api/state')).data;
+ const action=(name,extra={})=>request('/api/action',{action:name,incidentId:state.id,...extra});
+ const proposal=(await action('propose')).data.result;
+ await action('review'); await action('approve',{proposalId:proposal.id});
+ await action('execute'); await action('process'); await action('verify');
+ assert.equal((await request('/api/state')).data.verificationStatus.recovered,true);
+ await transact(dir,s=>{s.deliveries[0].id='replacement';});
+ const current=(await request('/api/state')).data;
+ assert.equal(current.state.verification.recovered,true); // Historical record retained.
+ assert.deepEqual(current.verificationStatus,{status:'stale',recovered:false});
+}));

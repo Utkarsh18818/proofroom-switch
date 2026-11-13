@@ -95,3 +95,8 @@ Includes a checksum-guarded local Switch Gateway UI overlay: readable graph labe
 ## Reviewer access
 
 [Explore the verified run without a password](https://proofroom-utkarsh18818.onrender.com/?demo=1). The login page also has an Explore verified demo button. This is a read-only view of the actual November 5 local run, not a new cloud agent execution. It exposes only the already-published evidence bundle, not the current operator workspace. Evidence export is public; all operator mutations still require sign-in.
+
+## Post-event development
+
+November 14 improvements on `codex/post-event-evidence-hardening` are separate from
+the submitted hackathon version. See [changes and tests](docs/Post-Event-Hardening.md).

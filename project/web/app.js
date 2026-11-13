@@ -28,20 +28,21 @@
   }
   async function refresh(renderPage=true){
     try{
-      const previous=data?.state?.events?.length;
+      const previous=JSON.stringify([data?.evidenceHash,data?.verificationStatus,data?.state?.events?.length]);
       data=await api('state');
       try{integrations=await api('integrations');}catch{integrations={switchHealthy:false,bridges:[]};}
       $('#sidebar-switch').textContent=user.readOnly?'Recorded Switch run':integrations.switchHealthy?'Connected to Switch':'Switch needs attention';
       $('#integration-dot').hidden=integrations.bridges.some(b=>b.type==='discord');
       $('#last-sync').textContent='Last synced '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-      $('#nav-count').textContent=data.state.verification?.recovered?'0':'1';
-      if(renderPage||previous!==data.state.events.length)render();
+      $('#nav-count').textContent=data.verificationStatus?.recovered?'0':'1';
+      if(renderPage||previous!==JSON.stringify([data.evidenceHash,data.verificationStatus,data.state.events.length]))render();
     }catch(error){if(user)toast(error.message,true);}
   }
   function navigate(next){page=next;render();window.scrollTo({top:0,behavior:'instant'});$('#main').focus({preventScroll:true});}
   function status(){
     const s=data.state;
-    if(s.verification?.recovered)return {label:'Recovery verified',good:true,step:5};
+    if(['stale','unbound'].includes(data.verificationStatus?.status))return {label:'Verification needs recheck',step:4};
+    if(data.verificationStatus?.recovered)return {label:'Recovery verified',good:true,step:5};
     if(s.execution)return {label:'Verification pending',step:4};
     if(s.approval)return {label:'Approved to recover',step:3};
     if(s.review)return {label:'Awaiting your approval',step:2};
@@ -52,7 +53,7 @@
   function heading(kicker,title,description,actions=''){return `<section class="page-heading"><div><span class="eyebrow">${kicker}</span><h1>${title}</h1><p>${description}</p></div><div class="heading-actions">${actions}</div></section>`;}
   function nextAction(){
     const s=data.state;
-    if(s.verification?.recovered)return {action:'new',title:'A verified recovery.',description:'Every delivery has been processed. Your evidence trail captures the decisions and the outcome.',button:'Start a new exercise',symbol:'✓'};
+    if(data.verificationStatus?.recovered)return {action:'new',title:'A verified recovery.',description:'Every delivery has been processed. Your evidence trail captures the decisions and the outcome.',button:'Start a new exercise',symbol:'✓'};
     if(s.execution&&!data.observation.queued)return {action:'verify',title:'Prove it worked.',description:'The queue has been processed. Run a fresh verification before marking this incident recovered.',button:'Verify recovery',symbol:'◎'};
     if(s.execution)return {action:'process',title:'Check the real outcome.',description:'The worker is resumed. Process the queued deliveries, then independently verify the result.',button:'Process deliveries',symbol:'↗'};
     if(s.approval)return {action:'execute',title:'Ready to recover.',description:'This exact proposal has your approval. Resume the worker; verification comes after execution.',button:'Resume worker',symbol:'↗'};
@@ -111,7 +112,7 @@
   function evidence(){
     const o=data.observation;
     return heading('A TRACEABLE OUTCOME','The evidence speaks.','Observed state and recorded decisions. No assumed success.',`<button class="button primary" data-export>↓ Export JSON</button>`)+
-    `<div class="evidence-grid"><div class="evidence-card"><h3>WORKER STATE</h3><strong>${o.paused?'Paused':'Running'}</strong><p>Generation ${o.generation} · revision ${o.revision}</p></div><div class="evidence-card"><h3>DELIVERY PROGRESS</h3><strong>${o.delivered} <small>/ ${o.total}</small></strong><p>${o.queued} deliveries remain in the local queue.</p></div><div class="evidence-card"><h3>VERIFICATION</h3><strong>${data.state.verification?.recovered?'Confirmed':data.state.verification?'Not recovered':'Not run'}</strong><p>${data.state.verification?'Last checked '+time(data.state.verification.at):'A fresh check is required after execution.'}</p></div></div><section class="panel"><div class="panel-header"><h2>Current observation</h2><span class="mono">SHA-256</span></div><div class="data-row"><span>Incident ID</span><code>${escape(data.state.id)}</code></div><div class="data-row"><span>Evidence fingerprint</span><code>${escape(data.evidenceHash)}</code></div><div class="data-row"><span>Source</span><strong>Local worker fixture · persisted state</strong></div></section>${timeline(true)}<div id="archive-region"></div><div class="notice">The ledger is stored locally and can be edited by the filesystem owner. It is an operational evidence trail, not a tamper-proof audit system.</div>`;
+    `<div class="evidence-grid"><div class="evidence-card"><h3>WORKER STATE</h3><strong>${o.paused?'Paused':'Running'}</strong><p>Generation ${o.generation} · revision ${o.revision}</p></div><div class="evidence-card"><h3>DELIVERY PROGRESS</h3><strong>${o.delivered} <small>/ ${o.total}</small></strong><p>${o.queued} deliveries remain in the local queue.</p></div><div class="evidence-card"><h3>VERIFICATION</h3><strong>${data.verificationStatus?.recovered?'Confirmed':data.verificationStatus?.status==='stale'?'Stale':data.verificationStatus?.status==='unbound'?'Recheck required':data.state.verification?'Not recovered':'Not run'}</strong><p>${data.state.verification?'Last checked '+time(data.state.verification.at):'A fresh check is required after execution.'}</p></div></div><section class="panel"><div class="panel-header"><h2>Current observation</h2><span class="mono">SHA-256</span></div><div class="data-row"><span>Incident ID</span><code>${escape(data.state.id)}</code></div><div class="data-row"><span>Evidence fingerprint</span><code>${escape(data.evidenceHash)}</code></div><div class="data-row"><span>Source</span><strong>Local worker fixture · persisted state</strong></div></section>${timeline(true)}<div id="archive-region"></div><div class="notice">The ledger is stored locally and can be edited by the filesystem owner. It is an operational evidence trail, not a tamper-proof audit system.</div>`;
   }
   function integrationPage(){
     if(user?.readOnly)return heading('RECORDED COLLABORATION','People and agents, together.','The verified run used native Switch, Discord, a diagnostic Codex agent, an independent reviewer and an operator decision.')+teamCard()+`<div class="notice">This public view shows recorded evidence. The new Render deployment uses separate accounts and does not claim those local agents are connected to its server.</div>`;
